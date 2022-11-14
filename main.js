@@ -75,7 +75,6 @@ window.addEventListener("DOMContentLoaded",()=>{
  //adding screenshow the data on screen if rfresh the page//
 function onscreenshow(obj)
 {
-
 const li = document.createElement("li");
     //add delete and edit
     const del = document.createElement("button");
@@ -94,16 +93,27 @@ const li = document.createElement("li");
 
 }
 
+
 userList.addEventListener("click", remove);
 
 function remove(e) {
+  
   e.preventDefault();
   if (e.target.classList.contains("delete")) {
     li = e.target.parentElement;
     let key = li.childNodes[2].textContent;
-    // key=JSON.stringify(key)
-    // console.log(key)
-    localStorage.removeItem(key);
+     axios.get("https://crudcrud.com/api/074139016f66489c8d26028642d74e06/appointmentcell").then((response)=>{
+      let data=response.data
+      for(let i=0;i<data.length;i++)
+      {
+        if(key===data[i].email)
+        {
+          console.log(data[i]._id)
+          axios.delete(`https://crudcrud.com/api/074139016f66489c8d26028642d74e06/appointmentcell/${data[i]._id}`)
+        }
+      }
+     })
+
     userList.removeChild(li);
   }
 }
